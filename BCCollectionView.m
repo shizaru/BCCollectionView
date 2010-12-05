@@ -9,6 +9,10 @@
 #import "BCCollectionView.h"
 #import "BCGeometryExtensions.h"
 
+@interface BCCollectionView ()
+- (void)_doInitialSetup;
+@end
+
 @implementation BCCollectionView
 @synthesize delegate, contentArray, backgroundColor, originalSelectionIndexes;
 
@@ -16,9 +20,22 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-  self = [super initWithCoder:aDecoder];
-  if (self) {
-    reusableViewControllers = [[NSMutableArray alloc] init];
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		[self _doInitialSetup];
+	}
+	return self;
+}
+
+- (id)initWithFrame:(NSRect)frameRect {
+	if (self = [super initWithFrame:frameRect]) {
+		[self _doInitialSetup];
+	}
+	return self;
+}
+
+- (void)_doInitialSetup {
+	reusableViewControllers = [[NSMutableArray alloc] init];
     visibleViewControllers  = [[NSMutableDictionary alloc] init];
     contentArray            = [[NSArray alloc] init];
     selectionIndexes        = [[NSMutableIndexSet alloc] init];
@@ -32,8 +49,7 @@
                    name:NSViewBoundsDidChangeNotification object:enclosingClipView];
     
     [center addObserver:self selector:@selector(viewDidResize) name:NSViewFrameDidChangeNotification  object:nil];
-  }
-  return self;
+	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change
