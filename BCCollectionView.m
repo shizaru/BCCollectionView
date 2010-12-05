@@ -100,8 +100,10 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-  [backgroundColor ? backgroundColor : [NSColor whiteColor] set];
-  NSRectFill(dirtyRect);
+	if (![backgroundColor isEqual:[NSColor clearColor]]) {
+		[backgroundColor ? backgroundColor : [NSColor whiteColor] set];
+		NSRectFill(dirtyRect);
+	}
   
   [[NSColor grayColor] set];
   NSFrameRect(BCRectFromTwoPoints(mouseDownLocation, mouseDraggedLocation));
